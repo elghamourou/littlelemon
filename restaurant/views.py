@@ -5,3 +5,6 @@ from django.shortcuts import render
 
 def say_hello(request):
     return HttpResponse("Hello, world!")
+
+def home(request):
+    return render(request, 'index.html',{})
