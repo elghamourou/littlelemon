@@ -2,9 +2,12 @@ from django.http import HttpResponse
 from django.shortcuts import render
 
 from restaurant.models import Booking, MenuItem
-from restaurant.serializers import BookingSerializer, MenuItemSerializer
+from restaurant.serializers import BookingSerializer, MenuItemSerializer, UserSerializer
 from rest_framework.views import APIView
+from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
+
+from django.contrib.auth.models import User
 
 # Create your views here.
 
@@ -28,6 +31,20 @@ class MenuItemView(APIView):
     
     def post(self, request):
         serializer = MenuItemSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"status": "success", "data": serializer.data})
+        else:
+            return Response({"status": "error", "data": serializer.errors}, status=400)
+
+class UserViewSet(ViewSet):
+    def list(self, request):
+        users = User.objects.all()
+        serializer = UserSerializer(users, many=True)
+        return Response(serializer.data)
+
+    def create(self, request):
+        serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response({"status": "success", "data": serializer.data})
