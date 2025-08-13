@@ -6,6 +6,7 @@ from restaurant.serializers import BookingSerializer, MenuItemSerializer, UserSe
 from rest_framework.views import APIView
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
+from rest_framework import generics
 
 from django.contrib.auth.models import User
 
@@ -50,3 +51,14 @@ class UserViewSet(ViewSet):
             return Response({"status": "success", "data": serializer.data})
         else:
             return Response({"status": "error", "data": serializer.errors}, status=400)
+
+
+class MenuItemGenericView(generics.ListCreateAPIView):
+    queryset = MenuItem.objects.all()
+    serializer_class = MenuItemSerializer
+
+class SingleMenuItemGenericView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = MenuItem.objects.all()
+    serializer_class = MenuItemSerializer
+    #lookup_field = 'id'
+    
