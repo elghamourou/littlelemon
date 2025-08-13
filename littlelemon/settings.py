@@ -86,6 +86,10 @@ DATABASES = {
         'USER': 'adminlittlelemon',
         'PASSWORD': 'adminlittlelemon@123!',
         'NAME': 'littlelemon_db',
+    },
+    'sqlite': { 
+        'ENGINE': 'django.db.backends.sqlite3', 
+        'NAME': BASE_DIR / 'db.sqlite3', 
     }
 }
 
