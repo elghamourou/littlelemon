@@ -8,8 +8,7 @@ from . import views
 urlpatterns = [
     path('hello', views.say_hello, name='say_hello'),
     path('', views.home, name='home'),
-    path('bookings/', views.BookingView.as_view()),
     path('menu/', views.MenuItemGenericView.as_view()),
     path('menu/<int:pk>/', views.SingleMenuItemGenericView.as_view()),
-    path('users/', views.UserViewSet.as_view({'get': 'list', 'post': 'create'})),
+    
 ]

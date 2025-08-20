@@ -7,6 +7,8 @@ from rest_framework.views import APIView
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import generics
+from rest_framework.viewsets import ModelViewSet
+from rest_framework import permissions
 
 from django.contrib.auth.models import User
 
@@ -38,19 +40,19 @@ class MenuItemView(APIView):
         else:
             return Response({"status": "error", "data": serializer.errors}, status=400)
 
-class UserViewSet(ViewSet):
-    def list(self, request):
-        users = User.objects.all()
-        serializer = UserSerializer(users, many=True)
-        return Response(serializer.data)
-
-    def create(self, request):
-        serializer = UserSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response({"status": "success", "data": serializer.data})
-        else:
-            return Response({"status": "error", "data": serializer.errors}, status=400)
+# class UserViewSet(ViewSet):
+#     def list(self, request):
+#         users = User.objects.all()
+#         serializer = UserSerializer(users, many=True)
+#         return Response(serializer.data)
+#
+#     def create(self, request):
+#         serializer = UserSerializer(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response({"status": "success", "data": serializer.data})
+#         else:
+#             return Response({"status": "error", "data": serializer.errors}, status=400)
 
 
 class MenuItemGenericView(generics.ListCreateAPIView):
@@ -61,4 +63,16 @@ class SingleMenuItemGenericView(generics.RetrieveUpdateDestroyAPIView):
     queryset = MenuItem.objects.all()
     serializer_class = MenuItemSerializer
     #lookup_field = 'id'
-    
+
+class BookingViewSet(ModelViewSet):
+    queryset = Booking.objects.all()
+    serializer_class = BookingSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save()  # You can add custom logic here if needed
+
+class UserViewSet(ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [permissions.IsAuthenticated]
