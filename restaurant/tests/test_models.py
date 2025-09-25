@@ -1,5 +1,5 @@
 from django.test import TestCase
-from .models import MenuItem
+from restaurant.models import MenuItem
 from decimal import Decimal
 
 # Create your tests here.
@@ -30,3 +30,8 @@ class MenuItemTest(TestCase):
         """Test the string representation of the model."""
         menu_item = self.menu_item
         self.assertEqual(str(menu_item), "Pizza")
+        
+    def test_get_item(self):
+        menu_item = self.menu_item
+        self.assertEqual(str(menu_item), "Pizza : 10.99")
+        
